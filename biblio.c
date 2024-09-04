@@ -27,7 +27,7 @@ void ajouterLivre(char titre[], float prixLivre, int quantite, char auteur[]) {
     prix[i] = prixLivre;
     quantites[i] = quantite;
     strcpy(auteurs[i], auteur);
-    nombreLivres = nombreLivres + 1;
+    nombreLivres++;
 }
 
 void afficherTous() {
@@ -42,8 +42,7 @@ void afficherTous() {
 }
 
 void afficherLivre(char titre[]) {
-    int index;
-    index = rechercherLivre(titre);
+    int index = rechercherLivre(titre);
     if (index != -1) {
         printf("Titre: %s\n", titres[index]);
         printf("Prix: %.2f\n", prix[index]);
@@ -55,25 +54,22 @@ void afficherLivre(char titre[]) {
 }
 
 void supprimerLivre(char titre[]) {
-    int index;
-    index = rechercherLivre(titre);
+    int index = rechercherLivre(titre);
     if (index != -1) {
-        int i;
-        for (i = index; i < nombreLivres - 1; i++) {
+        for (int i = index; i < nombreLivres - 1; i++) {
             strcpy(titres[i], titres[i + 1]);
             prix[i] = prix[i + 1];
             quantites[i] = quantites[i + 1];
             strcpy(auteurs[i], auteurs[i + 1]);
         }
-        nombreLivres = nombreLivres - 1;
+        nombreLivres--;
     } else {
         printf("Livre non trouvé\n");
     }
 }
 
 void modifierQuantite(char titre[], int nouvelleQuantite) {
-    int index;
-    index = rechercherLivre(titre);
+    int index = rechercherLivre(titre);
     if (index != -1) {
         quantites[index] = nouvelleQuantite;
         printf("Quantite modifiée\n");
@@ -83,10 +79,9 @@ void modifierQuantite(char titre[], int nouvelleQuantite) {
 }
 
 void afficherNombreTotalLivresEnStock() {
-    int i;
     int total = 0;
-    for (i = 0; i < nombreLivres; i++) {
-        total = total + quantites[i];
+    for (int i = 0; i < nombreLivres; i++) {
+        total += quantites[i];
     }
     printf("Nombre total de livres en stock: %d\n", total);
 }
@@ -108,37 +103,37 @@ int main() {
         printf("7. Quitter\n");
         printf("Choix: ");
         scanf("%d", &choix);
-        getchar();
+        getchar(); // Clear newline character from input buffer
 
         if (choix == 1) {
             afficherTous();
         } else if (choix == 2) {
             printf("Titre du livre à afficher: ");
             fgets(titre, MAX_TITRE, stdin);
-            titre[strcspn(titre, "\n")] = 0;
+            titre[strlen(titre) - 1] = '\0'; // Remove the newline character
             afficherLivre(titre);
         } else if (choix == 3) {
             printf("Titre: ");
             fgets(titre, MAX_TITRE, stdin);
-            titre[strcspn(titre, "\n")] = 0;
+            titre[strlen(titre) - 1] = '\0'; // Remove the newline character
             printf("Prix: ");
             scanf("%f", &prixLivre);
             printf("Quantite: ");
             scanf("%d", &quantite);
-            getchar();
+            getchar(); // Clear newline character from input buffer
             printf("Auteur: ");
             fgets(auteur, MAX_TITRE, stdin);
-            auteur[strcspn(auteur, "\n")] = 0;
+            auteur[strlen(auteur) - 1] = '\0'; // Remove the newline character
             ajouterLivre(titre, prixLivre, quantite, auteur);
         } else if (choix == 4) {
             printf("Titre du livre à supprimer: ");
             fgets(titre, MAX_TITRE, stdin);
-            titre[strcspn(titre, "\n")] = 0;
+            titre[strlen(titre) - 1] = '\0'; // Remove the newline character
             supprimerLivre(titre);
         } else if (choix == 5) {
             printf("Titre du livre pour modifier la quantite: ");
             fgets(titre, MAX_TITRE, stdin);
-            titre[strcspn(titre, "\n")] = 0;
+            titre[strlen(titre) - 1] = '\0'; // Remove the newline character
             printf("Nouvelle quantite: ");
             scanf("%d", &quantite);
             modifierQuantite(titre, quantite);
